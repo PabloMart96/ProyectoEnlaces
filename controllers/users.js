@@ -42,7 +42,7 @@ const getUserProfile = async (req, res, next) => {
     const { email } = req.auth;
     const user = await getUserByEmail(email);
 
-    if (user.length === 0) {
+    if (!user) {
       throw generateError('No hay ningun usuario con ese email y/o password', 404);
     }
     const { username } = user;
@@ -90,27 +90,29 @@ const loginController = async (req, res, next) => {
 //Permiete actualizar la informacion de un usuario validado
 const updateUser = async (req, res, next) => {
   try {
-    const { id } = req.auth;
+    const { id } = req.auth; //Obtencion del id de usuario a partir de la validacion
 
     const { body } = req;
     await schema.validateAsync(body);
-    const { username, email, password } = body;
+    const { username, email, password } = body; //desestructuracion del body pasado en la req
 
-    const userById = await getUserById(id);
-    const user = await getUserByEmail(email);
+    const userById = await getUserById(id); //Seleccionamos el usuario a partir del id de la validacion
+    const user = await getUserByEmail(email); //Selecionamos el usuario a partir del email de la req
 
+    //Comparamos que no exista un usuario con el email pasado por req
     if (user && user.id != id) {
       throw generateError('Ya existe un usuario con ese email', 409);
     }
 
-    let updatedPassword = userById.password;
+    let updatedPassword = userById.password; //Seleccionamos la contraseña del usuario validado
+    //si en la req se pasa una contraseña, se actualiza y se encripta
     if (password) {
       const passwordHash = await bcrypt.hash(password, 8);
 
       updatedPassword = passwordHash;
     }
 
-    await updateUserById({ id, username, email, password: updatedPassword });
+    await updateUserById({ id, username, email, password: updatedPassword }); //Actualizamos el usuario
 
     res.send({
       status: 'success',
