@@ -2,6 +2,7 @@ require('dotenv').config();
 
 const { getConnection } = require('./db');
 
+//Creación de la base de datos
 async function main() {
   let connection;
 
@@ -17,7 +18,7 @@ async function main() {
     await connection.query(`
     CREATE TABLE users (
         id INTEGER PRIMARY KEY AUTO_INCREMENT,
-        name VARCHAR(30) NOT NULL,
+        username VARCHAR(30) NOT NULL,
         email VARCHAR(100) UNIQUE NOT NULL,
         password VARCHAR(100) NOT NULL,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP

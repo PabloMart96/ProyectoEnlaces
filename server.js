@@ -1,33 +1,23 @@
 require('dotenv').config();
-
 const express = require('express');
+const cors = require('cors');
 const morgan = require('morgan');
-const {
-  newUserController,
-  getUserController,
-  loginController,
-} = require('./controllers/users');
-const {
-  getLinksController,
-  newLinkController,
-  getSingleLinkController,
-  deleteLinkController,
-} = require('./controllers/links');
+const userRoutes = require('./routes/userRoutes');
+const linkRoutes = require('./routes/linkRoutes');
 
 const app = express();
+const { PORT } = process.env;
+const port = PORT | 3000;
 
+app.use(express.json());
 app.use(morgan('dev'));
+app.use(cors());
 
 //Rutas de user
-app.post('/user', newUserController);
-app.get('/user/:id', getUserController);
-app.post('/login', loginController);
+app.use('/user', userRoutes);
 
 //Rutas de links
-app.get('/', getLinksController);
-app.post('/', newLinkController);
-app.get('/link/:id', getSingleLinkController);
-app.delete('/link/:id', deleteLinkController);
+app.use('/links', linkRoutes);
 
 //Middleware de 404
 app.use((req, res) => {
@@ -48,7 +38,6 @@ app.use((error, req, res, next) => {
 });
 
 //Lanzamos el server
-
-app.listen(3000, () => {
+app.listen(port, () => {
   console.log('Servidor funcionando!');
 });
