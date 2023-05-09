@@ -1,5 +1,4 @@
 const { getConnection } = require('../db/db');
-// const { generateError } = require('../helpers');
 
 
 //Devuelve todos los links de la base de datos
@@ -69,7 +68,7 @@ const deleteLinkById = async (id) => {
     } finally {
         if (connection) connection.release();
     }
-}
+};
 
 
 module.exports = {

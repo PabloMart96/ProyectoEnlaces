@@ -60,7 +60,7 @@ const deleteLinkController = async (req, res, next) => {
     }
 
     if (userId !== link.user_id) {
-      throw generateError('Estas tratando de borrar un link que no es tuyo', 401);
+      throw generateError('Estas tratando de borrar un link que no es tuyo!!', 401);
     }
 
     await deleteLinkById(id);
@@ -78,5 +78,5 @@ const deleteLinkController = async (req, res, next) => {
 module.exports = {
   getLinksController,
   newLinkController,
-  deleteLinkController,
+  deleteLinkController
 };

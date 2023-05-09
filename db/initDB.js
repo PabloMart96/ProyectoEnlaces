@@ -2,7 +2,7 @@ require('dotenv').config();
 
 const { getConnection } = require('./db');
 
-//Creación de la base de datos
+//Creación la base de datos
 async function main() {
   let connection;
 
@@ -12,6 +12,7 @@ async function main() {
     console.log('Borrando tablas existentes');
     await connection.query('DROP TABLE IF EXISTS links');
     await connection.query('DROP TABLE IF EXISTS users');
+    await connection.query('DROP TABLE IF EXISTS ratings');
 
     console.log('Creando las tablas de la base de datos');
 
@@ -33,6 +34,17 @@ async function main() {
         description VARCHAR(200) NOT NULL,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (user_id) REFERENCES users(id)
+    );
+    `);
+    await connection.query(`
+    CREATE TABLE ratings (
+        id INTEGER PRIMARY KEY AUTO_INCREMENT,
+        user_id INTEGER NOT NULL,
+        link_id INTEGER NOT NULL,
+        rating INTEGER NOT NULL,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id),
+        FOREIGN KEY (link_id) REFERENCES links(id),
     );
     `);
   } catch (error) {
