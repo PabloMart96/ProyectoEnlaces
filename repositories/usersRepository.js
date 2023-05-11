@@ -38,7 +38,7 @@ const getUserById = async (id) => {
     try {
         connection = await getConnection();
         const [result] = await connection.query(`
-            SELECT id, username,email, created_at FROM users WHERE id = ? 
+            SELECT id, username,email, description, created_at FROM users WHERE id = ? 
         `,
             [id]);
 
@@ -73,22 +73,39 @@ const getUserByEmail = async (email) => {
 //Actualizacion de la informacion del usuario por el Id
 const updateUserById = async (data) => {
     let connection;
-    const { id, username, email, password } = data;
+    const { id, username, email, password, description } = data;
 
     try {
         connection = await getConnection();
 
         await connection.query(`
             UPDATE users
-            SET username = ?, email = ?, password = ? WHERE id = ?
+            SET username = ?, email = ?, password = ?, description = ? WHERE id = ?
         `,
-            [username, email, password, id]);
+            [username, email, password, description, id]);
 
         return true;
     } finally {
         if (connection) connection.release();
     }
 
+};
+
+//Introducimos una imagen dentro del perfil del usuario
+const uploadUserImage = async (id, image) => {
+    let connection;
+    try {
+
+        connection = await getConnection();
+
+        await connection.query(`
+            UPDATE users SET image = ? WHERE id = ?
+        `, [image, id]);
+
+        return true;
+    } finally {
+        if (connection) connection.release();
+    }
 }
 
 
@@ -97,4 +114,5 @@ module.exports = {
     getUserById,
     getUserByEmail,
     updateUserById,
+    uploadUserImage
 }

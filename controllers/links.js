@@ -55,7 +55,7 @@ const deleteLinkController = async (req, res, next) => {
     await schema2.validateAsync(id);
 
     const link = await getLinkById(id);
-    if (link === 0) {
+    if (!link) {
       throw generateError('El link no existe', 400);
     }
 

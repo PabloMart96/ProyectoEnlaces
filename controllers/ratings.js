@@ -19,7 +19,6 @@ const registerVoteController = async (req, res, next) => {
         const { rating } = req.body;
         await schema2.validateAsync(rating);
 
-
         const link = await getLinkById(linkId);
         if (link.length === 0) {
             throw generateError('No existe una publicacion con ese id', 400);
