@@ -1,14 +1,18 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Joi = require('joi');
+const path = require('path');
+const fs = require('fs').promises;
+const sharp = require('sharp');
 const { generateError } = require("../helpers");
-const { createUser, getUserById, getUserByEmail, updateUserById } = require("../repositories/usersRepository");
+const { createUser, getUserById, getUserByEmail, updateUserById, uploadUserImage } = require("../repositories/usersRepository");
 
 //Crea un esquema de validacion con el paquete Joi
 const schema = Joi.object().keys({
   username: Joi.string().min(4).max(120).required(),
   email: Joi.string().email().required(),
   password: Joi.string().min(4).max(20).required(),
+  description: Joi.string().min(4),
 });
 
 const schema2 = Joi.object().keys({
@@ -16,6 +20,7 @@ const schema2 = Joi.object().keys({
   password: Joi.string().min(4).max(20).required(),
 });
 
+const validExtension = ['.jpeg', '.jpg', '.png', '.webp'];
 
 //Registra a un usuario a partir del username, email y password
 const newUserController = async (req, res, next) => {
@@ -45,10 +50,10 @@ const getUserProfile = async (req, res, next) => {
     if (!user) {
       throw generateError('No hay ningun usuario con ese email y/o password', 404);
     }
-    const { username } = user;
+    const { username, created_at } = user;
 
     res.status(200);
-    res.send({ username, email });
+    res.send({ username, email, created_at });
   } catch (error) {
     next(error);
   }
@@ -62,6 +67,10 @@ const loginController = async (req, res, next) => {
     const { email, password } = body;
 
     const user = await getUserByEmail(email);
+
+    if (!user) {
+      throw generateError('No existe un usuario con ese email y/o password', 401);
+    }
 
     const validPassword = await bcrypt.compare(password, user.password);
 
@@ -94,7 +103,7 @@ const updateUser = async (req, res, next) => {
 
     const { body } = req;
     await schema.validateAsync(body);
-    const { username, email, password } = body; //desestructuracion del body pasado en la req
+    let { username, email, password, description } = body; //desestructuracion del body pasado en la req
 
     const userById = await getUserById(id); //Seleccionamos el usuario a partir del id de la validacion
     const user = await getUserByEmail(email); //Selecionamos el usuario a partir del email de la req
@@ -112,20 +121,104 @@ const updateUser = async (req, res, next) => {
       updatedPassword = passwordHash;
     }
 
-    await updateUserById({ id, username, email, password: updatedPassword }); //Actualizamos el usuario
+    //Si no se pasa la descripcion como parametro, no eliminar la anterior
+    const oldDescription = userById.description;
+    if (!description) {
+      description = oldDescription;
+    }
+
+    //En caso de que se pase la imagen por paramtro, la validamos y actualizamos
+    if (req.files) {
+
+      const { picture } = req.files;
+      const extension = path.extname(picture.name);
+
+      //validamos la extension de la imagen
+      if (!validExtension.includes(extension)) {
+        throw generateError('Formato no válido', 400);
+      }
+
+      const user = await getUserById(id);
+      const { image } = user;
+
+      //creamos la ruta de la imagen
+      const pathPicture = path.join(__dirname, '../public/profile');
+
+      if (image) {
+        await fs.unlink(`${pathPicture}/${image}`);
+      }
+
+      const imageName = `${id}-${picture.name}`;
+      const pathImage = `${pathPicture}/${imageName}`;
+
+      //Redimensionamos la imagen
+      await sharp(picture.data).resize(500, 500).toFile(pathImage);
+
+      await uploadUserImage(id, imageName);
+
+    }
+
+    await updateUserById({ id, username, email, password: updatedPassword, description }); //Actualizamos el usuario
 
     res.send({
       status: 'success',
-      data: id, username, email
+      id, username, email,
+      message: "Usuario actualizado correctamente!!"
     });
   } catch (error) {
     next(error);
   }
 };
 
+
+//Actualizacion de la imagen de perfil de usuario
+const imagenController = async (req, res, next) => {
+  try {
+
+    const { email } = req.auth;
+    const { files } = req;
+
+    if (!files) {
+      throw generateError('No se ha seleccionado fichero');
+    }
+
+    const { picture } = files;
+    const extension = path.extname(picture.name);
+
+    //validamos la extension de la imagen
+    if (!validExtension.includes(extension)) {
+      throw generateError('Formato no válido', 400);
+    }
+
+    const user = await getUserByEmail(email);
+    const { id, image } = user;
+
+    //creamos la ruta de la imagen
+    const pathPicture = path.join(__dirname, '../public/profile');
+
+    if (image) {
+      await fs.unlink(`${pathPicture}/${image}`);
+    }
+
+    const imageName = `${id}-${picture.name}`;
+    const pathImage = `${pathPicture}/${imageName}`;
+
+    //Redimensionamos la imagen
+    await sharp(picture.data).resize(500, 500).toFile(pathImage);
+
+    await uploadUserImage(id, imageName);
+
+    res.send({ message: 'Imagen guardada y redimensionada exitosamente' });
+
+  } catch (error) {
+    next()
+  }
+}
+
 module.exports = {
   newUserController,
   loginController,
   updateUser,
   getUserProfile,
+  imagenController,
 };
