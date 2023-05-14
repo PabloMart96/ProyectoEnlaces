@@ -59,10 +59,10 @@ async function main() {
 
     await connection.query(
       `INSERT INTO users (username, email, password, image, description) 
-       VALUES ('pab43', 'pab_43@mail.test', '1245', NULL, 'Primera Cuenta'),
-              ('josh_ruki', 'Josito@mail.test', '8754', NULL, 'Segunda Cuenta'),
-              ('lokiPakillo', 'pakillo@mail.test', '2356', NULL, 'Tercera Cuenta'),
-              ('Maritxu', 'maria@mail.test', '9865', NULL, 'Cuarta Cuenta');`
+       VALUES ('pab43', 'pab_43@mail.test', 'root', NULL, 'Primera Cuenta'),
+              ('josh_ruki', 'Josito@mail.test', 'root', NULL, 'Segunda Cuenta'),
+              ('lokiPakillo', 'pakillo@mail.test', 'root', NULL, 'Tercera Cuenta'),
+              ('Maritxu', 'maria@mail.test', '9865', root, 'Cuarta Cuenta');`
     );
 
     await connection.query(
