@@ -27,11 +27,15 @@ ENDPOINTS
 
 ● POST/user - Registro de usuario.
 ● GET /user/:id - Devuelve información de usuario
-● POST /login - Login de usuario (devuelve token)
+● POST /user/login - Login de usuario (devuelve token)
+● GET /user/:id/links - Devuelve enlaces publicados por el usuario
+● GET /user/:id/links/:linkId - Devuelve enlace publicado por el usuario
+● POST /user/:id/links - Crea un enlace para un usuario
 
-● GET / - Lista de todos los links
-● POST / - Permite crear un link
-● GET /link/:id - Devuelve un link
-● DELETE /link/:id - Borra un link si eres quien lo creo
-●
-●
+● GET /links - Lista de todos los links
+● GET /links/:id - Devuelve un link
+● POST /links/create - Crea un enlace
+● DELETE /links/:id - Borra un link si eres quien lo creo
+● GET links/:id/ratings - Devuelve la valoracion de un enlace
+● GET links/:id/average - Devuelve la media de valoraciones de un enlace
+● POST links/:id/ratings - Crea una valoracion para un enlace
