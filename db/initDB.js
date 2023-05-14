@@ -10,12 +10,16 @@ async function main() {
     connection = await getConnection();
 
     console.log('Borrando tablas existentes');
-    await connection.query('ALTER TABLE ratings DROP FOREIGN KEY ratings_ibfk_2');
-    await connection.query('ALTER TABLE ratings DROP FOREIGN KEY ratings_ibfk_1');
+    await connection.query(
+      'ALTER TABLE ratings DROP FOREIGN KEY ratings_ibfk_2'
+    );
+    await connection.query(
+      'ALTER TABLE ratings DROP FOREIGN KEY ratings_ibfk_1'
+    );
+
     await connection.query('DROP TABLE IF EXISTS links');
     await connection.query('DROP TABLE IF EXISTS users');
     await connection.query('DROP TABLE IF EXISTS ratings');
-
 
     console.log('Creando las tablas de la base de datos');
 
@@ -52,6 +56,22 @@ async function main() {
         FOREIGN KEY (link_id) REFERENCES links(id)
     );
     `);
+
+    await connection.query(
+      `INSERT INTO users (username, email, password, image, description) 
+       VALUES ('pab43', 'pab_43@mail.test', '1245', NULL, 'Primera Cuenta'),
+              ('josh_ruki', 'Josito@mail.test', '8754', NULL, 'Segunda Cuenta'),
+              ('lokiPakillo', 'pakillo@mail.test', '2356', NULL, 'Tercera Cuenta'),
+              ('Maritxu', 'maria@mail.test', '9865', NULL, 'Cuarta Cuenta');`
+    );
+
+    await connection.query(
+      `INSERT INTO links (user_id, url, titulo, description) 
+      VALUES  (1, 'https://www.google.com/', 'Google', 'Mejor buscador del mundo'),
+              (3, 'https://www.twitch.com/', 'Twitch', 'Streamers retransmitiendo en directo'),
+              (1, 'https://www.youtube.com/', 'Youtube', 'Los mejores videos de todo internet'),
+              (4, 'https://www.twitter.com/', 'Twitter', 'Centro de noticicas y desvarios');`
+    );
   } catch (error) {
     console.error(error);
   } finally {
