@@ -30,11 +30,12 @@ ENDPOINTS
 ● POST /user/login - Login de usuario (devuelve token)
 ● GET /user/:id/links - Devuelve enlaces publicados por el usuario
 ● GET /user/:id/links/:linkId - Devuelve enlace publicado por el usuario
-● GET /user/:id/links/:linkId/vote - Devuelve votos de un enlace
-● POST /user/:id/links - Crea un enlace
+● POST /user/:id/links - Crea un enlace para un usuario
 
 ● GET /links - Lista de todos los links
 ● GET /links/:id - Devuelve un link
+● POST /links/create - Crea un enlace
 ● DELETE /links/:id - Borra un link si eres quien lo creo
-● GET /:id/ratings - Devuelve la valoracion de un enlace
-● GET /:id/average - Devuelve la media de valoraciones de un enlace
+● GET links/:id/ratings - Devuelve la valoracion de un enlace
+● GET links/:id/average - Devuelve la media de valoraciones de un enlace
+● POST links/:id/ratings - Crea una valoracion para un enlace
