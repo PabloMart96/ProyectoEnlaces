@@ -1,0 +1,380 @@
+{
+	"info": {
+		"_postman_id": "07bd0ec4-e1c1-4f4d-8f64-9b30d1f870f8",
+		"name": "EnlacesWeb API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21326546"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Create user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"cristina\",\r\n    \"email\": \"cristina@cristina.com\",\r\n    \"password\": \"root\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/user/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"pm.globals.set(\"accessToken\", response.accessToken);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"laura@laura.com\",\r\n    \"password\": \"root\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/user/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update user",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwidXNlcm5hbWUiOiJsYXVyYSIsImVtYWlsIjoibGF1cmFAbGF1cmEuY29tIiwiaWF0IjoxNjgzODIxMzI2LCJleHAiOjE2ODY0MTMzMjZ9.NAPxFOa2IN9KOiLqlvjWhliw-4O_eidwYHVIxCDuf-g",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "pepita",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "pepita@pepita.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "root",
+									"type": "text"
+								},
+								{
+									"key": "picture",
+									"type": "file",
+									"src": "tiger.jpg"
+								},
+								{
+									"key": "description",
+									"value": "Hola soy pepita",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3000/user/profile",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetProfile",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"pm.globals.set(\"accessToken\", response.accessToken);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbmRyZXMiLCJlbWFpbCI6ImFuZHJlc0BhbmRyZXMuY29tIiwiaWF0IjoxNjgzNzI2NDg3LCJleHAiOjE2ODYzMTg0ODd9.HI2QuEYiSEytdMVH5SLvwFfjZoqfmYD4Byf46fiaadE",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/user/profile",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "uploadImage",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJsdWlzIiwiZW1haWwiOiJsdWlzQGx1aXMuY29tIiwiaWF0IjoxNjgzNzg1ODg3LCJleHAiOjE2ODYzNzc4ODd9.8ZqB5CEx74BiTJ0UpZg-fxDfQs5YkWuIAHuizL3MqAM",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:3000/user/upload",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								"upload"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Links",
+			"item": [
+				{
+					"name": "Link list",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwidXNlcm5hbWUiOiJrYXJlbiIsImVtYWlsIjoia2FyZW5Aa2FyZW4uY29tIiwiaWF0IjoxNjgzNjU4NDkxLCJleHAiOjE2ODYyNTA0OTF9.SmR4WLCO6C1HgZg5iAaGW039AWzTyt2qtS8EVdrfvAY",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:3000/links/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"links",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete linkID",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbmRyZXMiLCJlbWFpbCI6ImFuZHJlc0BhbmRyZXMuY29tIiwiaWF0IjoxNjgzNjU3NTM3LCJleHAiOjE2ODYyNDk1Mzd9.lpihfAU45xNSrVo0WOTip-pyA8flwePorxaqt-F8-2w",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:3000/links/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"links",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create link",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwidXNlcm5hbWUiOiJjcmlzdGluYSIsImVtYWlsIjoiY3Jpc3RpbmFAY3Jpc3RpbmEuY29tIiwiaWF0IjoxNjgzNjU4ODU5LCJleHAiOjE2ODYyNTA4NTl9.seh8KC7W8ns8iVuF4gDgQp930YTTMklif5hRpSfNe80",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"url\": \"https://Instagram.com\",\r\n    \"titulo\": \"Instagram\",\r\n    \"description\": \"Red Social para subir fotos y hablar con gente\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/links/create",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"links",
+								"create"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Ratings",
+			"item": [
+				{
+					"name": "Create rating",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwidXNlcm5hbWUiOiJjcmlzdGluYSIsImVtYWlsIjoiY3Jpc3RpbmFAY3Jpc3RpbmEuY29tIiwiaWF0IjoxNjgzNjU4ODU5LCJleHAiOjE2ODYyNTA4NTl9.seh8KC7W8ns8iVuF4gDgQp930YTTMklif5hRpSfNe80",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"rating\": 5\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/links/1/ratings",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"links",
+								"1",
+								"ratings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Average rating",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwidXNlcm5hbWUiOiJjcmlzdGluYSIsImVtYWlsIjoiY3Jpc3RpbmFAY3Jpc3RpbmEuY29tIiwiaWF0IjoxNjgzNjU4ODU5LCJleHAiOjE2ODYyNTA4NTl9.seh8KC7W8ns8iVuF4gDgQp930YTTMklif5hRpSfNe80",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/links/1/average",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"links",
+								"1",
+								"average"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
