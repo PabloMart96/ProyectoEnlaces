@@ -39,7 +39,8 @@ const newLinkController = async (req, res, next) => {
 
     res.send({
       status: 'success',
-      message: `Links con id: ${id} creado correctamente!!`
+      message: `Links con id: ${id} creado correctamente!!`,
+      data: { url, titulo, description },
     });
 
   } catch (error) {
@@ -55,6 +56,7 @@ const deleteLinkController = async (req, res, next) => {
     await schema2.validateAsync(id);
 
     const link = await getLinkById(id);
+    const { url, titulo } = link;
     if (!link) {
       throw generateError('El link no existe', 400);
     }
@@ -67,7 +69,8 @@ const deleteLinkController = async (req, res, next) => {
 
     res.send({
       status: 'success',
-      message: `El link con id: ${id} fue borrado exitosamente!!`
+      message: `El link con id: ${id} fue borrado exitosamente!!`,
+      data: { titulo, url },
     });
 
   } catch (error) {

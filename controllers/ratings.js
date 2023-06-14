@@ -28,7 +28,8 @@ const registerVoteController = async (req, res, next) => {
 
         res.send({
             status: 'success',
-            ratingId,
+            message: `Votacion realizada exitosamente con id: ${ratingId}`,
+            data: { rating }
         });
 
     } catch (error) {

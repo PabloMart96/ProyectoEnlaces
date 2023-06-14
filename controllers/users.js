@@ -33,7 +33,8 @@ const newUserController = async (req, res, next) => {
 
     res.send({
       status: 'success',
-      message: `User created with id: ${id}`,
+      message: `Usuario creado con id: ${id}`,
+      data: { username, email }
     });
 
   } catch (error) {
@@ -50,10 +51,13 @@ const getUserProfile = async (req, res, next) => {
     if (!user) {
       throw generateError('No hay ningun usuario con ese email y/o password', 404);
     }
-    const { username, created_at } = user;
+    const { id, username, created_at, image, description } = user;
 
-    res.status(200);
-    res.send({ username, email, created_at });
+    res.send({
+      status: 'success',
+      message: `Usuario con id: ${id}`,
+      data: { username, email, created_at, image, description }
+    });
   } catch (error) {
     next(error);
   }
@@ -88,7 +92,7 @@ const loginController = async (req, res, next) => {
 
     res.send({
       status: 'success',
-      data: token,
+      access: token,
     })
 
   } catch (error) {
@@ -127,6 +131,8 @@ const updateUser = async (req, res, next) => {
       description = oldDescription;
     }
 
+    const { image } = user; //Seleccionamos la imagen del usuario.
+
     //En caso de que se pase la imagen por paramtro, la validamos y actualizamos
     if (req.files) {
 
@@ -138,8 +144,8 @@ const updateUser = async (req, res, next) => {
         throw generateError('Formato no válido', 400);
       }
 
-      const user = await getUserById(id);
-      const { image } = user;
+      // const user = await getUserById(id);
+
 
       //creamos la ruta de la imagen
       const pathPicture = path.join(__dirname, '../public/profile');
@@ -162,8 +168,8 @@ const updateUser = async (req, res, next) => {
 
     res.send({
       status: 'success',
-      id, username, email,
-      message: "Usuario actualizado correctamente!!"
+      message: "Usuario actualizado correctamente",
+      data: { id, username, email, image, description },
     });
   } catch (error) {
     next(error);
@@ -191,7 +197,7 @@ const imagenController = async (req, res, next) => {
     }
 
     const user = await getUserByEmail(email);
-    const { id, image } = user;
+    const { id, username, image } = user;
 
     //creamos la ruta de la imagen
     const pathPicture = path.join(__dirname, '../public/profile');
@@ -208,7 +214,11 @@ const imagenController = async (req, res, next) => {
 
     await uploadUserImage(id, imageName);
 
-    res.send({ message: 'Imagen guardada y redimensionada exitosamente' });
+    res.send({
+      status: 'success',
+      message: 'Imagen guardada y redimensionada exitosamente',
+      data: { username, image },
+    });
 
   } catch (error) {
     next()
