@@ -1,4 +1,5 @@
 const { getConnection } = require('../db/db');
+const { generateError } = require('../helpers');
 
 //Creamos una valoracion de la publicacion
 const addVote = async (user_id, link_id, rating) => {
@@ -6,6 +7,15 @@ const addVote = async (user_id, link_id, rating) => {
 
     try {
         connection = await getConnection();
+
+        const [vote] = await connection.query(`
+        SELECT * FROM ratings WHERE user_id = ? AND link_id = ?
+        `,
+            [user_id, link_id]);
+
+        if (vote.length > 0) {
+            throw generateError('El usuario ya ha realizado un voto sobre este enlace', 409);
+        }
 
         const [result] = await connection.query(`
             INSERT INTO ratings (user_id, link_id, rating)

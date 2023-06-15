@@ -20,7 +20,7 @@ const registerVoteController = async (req, res, next) => {
         await schema2.validateAsync(rating);
 
         const link = await getLinkById(linkId);
-        if (link.length === 0) {
+        if (!link) {
             throw generateError('No existe una publicacion con ese id', 400);
         }
 
@@ -28,11 +28,12 @@ const registerVoteController = async (req, res, next) => {
 
         res.send({
             status: 'success',
-            ratingId,
+            message: `Votacion realizada exitosamente con id: ${ratingId}`,
+            data: { rating },
         });
 
     } catch (error) {
-        next();
+        next(error);
     }
 };
 
