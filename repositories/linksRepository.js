@@ -9,7 +9,7 @@ const getAllLinks = async () => {
         connection = await getConnection();
 
         const [result] = await connection.query(`
-            SELECT * FROM links ORDER BY created_at DESC
+            SELECT l.url, l.titulo, l.description, l.created_at, u.username, u.email, u.image FROM links l INNER JOIN users u ON l.user_id = u.id ORDER BY created_at DESC
         `);
         return result;
     } finally {
