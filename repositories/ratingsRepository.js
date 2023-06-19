@@ -52,7 +52,31 @@ const getRating = async (link_id) => {
     }
 };
 
+//Comprobar si el usuario ha votado ya en el link
+const checkVoted = async (userId, id) => {
+    let connection;
+    try {
+        connection = await getConnection();
+
+        const [result] = await connection.query(`
+            SELECT * FROM ratings WHERE id = ? AND user_id = ?
+        `,
+            [id, userId]);
+
+        if (result.length > 0) {
+            return true
+        }
+
+        return false;
+
+    } finally {
+        if (connection) connection.release();
+    }
+}
+
+
 module.exports = {
     addVote,
     getRating,
+    checkVoted
 }

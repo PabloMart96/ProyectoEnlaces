@@ -81,5 +81,5 @@ const deleteLinkController = async (req, res, next) => {
 module.exports = {
   getLinksController,
   newLinkController,
-  deleteLinkController
-};
+  deleteLinkController,
+}
