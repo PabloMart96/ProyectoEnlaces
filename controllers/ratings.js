@@ -1,7 +1,7 @@
 const Joi = require('joi');
 const { generateError } = require('../helpers');
 const { getLinkById } = require('../repositories/linksRepository');
-const { addVote, getRating } = require('../repositories/ratingsRepository');
+const { addVote, getRating, checkVoted } = require('../repositories/ratingsRepository');
 
 //Crea un esquema de validacion con el paquete Joi
 const schema = Joi.number().integer().positive().required();
@@ -62,7 +62,28 @@ const getAverageRatings = async (req, res, next) => {
 }
 
 
+const getUserVote = async (req, res, next) => {
+    try {
+        const userId = req.auth.id;
+        const { id } = req.params;
+
+        await schema.validateAsync(id);
+
+        const hasVoted = await checkVoted(userId, id);
+
+        res.send({
+            status: 'success',
+            data: hasVoted,
+        })
+
+    } catch (error) {
+        next(error)
+    }
+}
+
+
 module.exports = {
     registerVoteController,
     getAverageRatings,
+    getUserVote,
 }

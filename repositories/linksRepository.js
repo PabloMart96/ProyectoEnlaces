@@ -70,7 +70,6 @@ const deleteLinkById = async (id) => {
     }
 };
 
-
 module.exports = {
     getAllLinks,
     createLink,
