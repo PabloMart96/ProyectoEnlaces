@@ -47,14 +47,14 @@ async function main() {
     `);
     await connection.query(`
     CREATE TABLE ratings (
-        id INTEGER PRIMARY KEY AUTO_INCREMENT,
-        user_id INTEGER NOT NULL,
-        link_id INTEGER NOT NULL,
-        rating INTEGER NOT NULL,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (user_id) REFERENCES users(id),
-        FOREIGN KEY (link_id) REFERENCES links(id)
-    );
+      id INTEGER PRIMARY KEY AUTO_INCREMENT,
+      user_id INTEGER NOT NULL,
+      link_id INTEGER NOT NULL,
+      rating INTEGER NOT NULL,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+      FOREIGN KEY (link_id) REFERENCES links(id) ON DELETE CASCADE
+  );
     `);
 
     // await connection.query(
