@@ -4,6 +4,7 @@ const Joi = require('joi');
 const path = require('path');
 const fs = require('fs').promises;
 const sharp = require('sharp');
+const nanoid = require('nanoid');
 const { generateError } = require("../helpers");
 const { createUser, getUserById, getUserByEmail, updateUserById, uploadUserImage } = require("../repositories/usersRepository");
 
@@ -107,7 +108,7 @@ const updateUser = async (req, res, next) => {
 
     const { body } = req;
     await schema.validateAsync(body);
-    let { username, email, password, description } = body; //desestructuracion del body pasado en la req
+    let { username, email, password, description, image} = body; //desestructuracion del body pasado en la req
 
     const userById = await getUserById(id); //Seleccionamos el usuario a partir del id de la validacion
     const user = await getUserByEmail(email); //Selecionamos el usuario a partir del email de la req
@@ -131,9 +132,9 @@ const updateUser = async (req, res, next) => {
       description = oldDescription;
     }
 
-    const { image } = user; //Seleccionamos la imagen del usuario.
+    //const { image } = user; //Seleccionamos la imagen del usuario.
 
-    //En caso de que se pase la imagen por paramtro, la validamos y actualizamos
+    //En caso de que se pase la imagen por parametro, la validamos y actualizamos
     if (req.files) {
 
       const { picture } = req.files;
@@ -151,7 +152,7 @@ const updateUser = async (req, res, next) => {
         await fs.unlink(`${pathPicture}/${image}`);
       }
 
-      const imageName = `${id}-${picture.name}`;
+      const imageName = `${nanoid(24)}-${picture.name}`;
       const pathImage = `${pathPicture}/${imageName}`;
 
       //Redimensionamos la imagen
@@ -206,7 +207,7 @@ const imagenController = async (req, res, next) => {
       await fs.unlink(`${pathPicture}/${image}`);
     }
 
-    const imageName = `${id}-${picture.name}`;
+    const imageName = `${nanoid(24)}-${picture.name}`;
     const pathImage = `${pathPicture}/${imageName}`;
 
     //Redimensionamos la imagen

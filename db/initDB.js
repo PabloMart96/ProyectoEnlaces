@@ -62,7 +62,8 @@ async function main() {
        VALUES ('pab43', 'pab_43@mail.test', 'root', NULL, 'Primera Cuenta'),
               ('josh_ruki', 'Josito@mail.test', 'root', NULL, 'Segunda Cuenta'),
               ('lokiPakillo', 'pakillo@mail.test', 'root', NULL, 'Tercera Cuenta'),
-              ('Maritxu', 'maria@mail.test', '9865', root, 'Cuarta Cuenta');`
+              ('Maritxu', 'maria@mail.test', 'root', NULL, 'Cuarta Cuenta'),
+              ('Jon', 'jon@mail.com', 'root', NULL, 'Quinta Cuenta');`
     );
 
     await connection.query(
