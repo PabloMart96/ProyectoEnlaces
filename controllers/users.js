@@ -185,8 +185,8 @@ const imagenController = async (req, res, next) => {
     const { email } = req.auth;
     const { files } = req;
 
-    if (!files) {
-      throw generateError('No se ha seleccionado fichero');
+    if (!files || !files.picture) {
+      throw generateError('No se ha seleccionado el archivo de imagen');
     }
 
     const { picture } = files;
