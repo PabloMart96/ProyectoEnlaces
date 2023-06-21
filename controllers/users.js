@@ -12,7 +12,7 @@ const { createUser, getUserById, getUserByEmail, updateUserById, uploadUserImage
 const schema = Joi.object().keys({
   username: Joi.string().min(4).max(120).required(),
   email: Joi.string().email().required(),
-  password: Joi.string().min(4).max(20).required(),
+  password: Joi.string().min(4).max(20).optional(),
   description: Joi.string().min(4),
 });
 
@@ -107,7 +107,7 @@ const updateUser = async (req, res, next) => {
     const { id } = req.auth; //Obtencion del id de usuario a partir de la validacion
 
     const { body } = req;
-    await schema.validateAsync(body);
+    /*await schema.validateAsync(body);*/
     let { username, email, password, description, image} = body; //desestructuracion del body pasado en la req
 
     const userById = await getUserById(id); //Seleccionamos el usuario a partir del id de la validacion
@@ -120,10 +120,12 @@ const updateUser = async (req, res, next) => {
 
     let updatedPassword = userById.password; //Seleccionamos la contraseña del usuario validado
     //si en la req se pasa una contraseña, se actualiza y se encripta
-    if (password) {
+    if (password && password.trim() !== "") {
       const passwordHash = await bcrypt.hash(password, 8);
 
       updatedPassword = passwordHash;
+    } else {
+      updatedPassword = userById.password; // No se actualiza el password
     }
 
     //Si no se pasa la descripcion como parametro, no eliminar la anterior
