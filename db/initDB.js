@@ -57,22 +57,22 @@ async function main() {
     );
     `);
 
-    await connection.query(
-      `INSERT INTO users (username, email, password, image, description) 
-       VALUES ('pab43', 'pab_43@mail.test', 'root', NULL, 'Primera Cuenta'),
-              ('josh_ruki', 'Josito@mail.test', 'root', NULL, 'Segunda Cuenta'),
-              ('lokiPakillo', 'pakillo@mail.test', 'root', NULL, 'Tercera Cuenta'),
-              ('Maritxu', 'maria@mail.test', 'root', NULL, 'Cuarta Cuenta'),
-              ('Jon', 'jon@mail.com', 'root', NULL, 'Quinta Cuenta');`
-    );
+    // await connection.query(
+    //   `INSERT INTO users (username, email, password, image, description) 
+    //    VALUES ('pab43', 'pab_43@mail.test', 'root', NULL, 'Primera Cuenta'),
+    //           ('josh_ruki', 'Josito@mail.test', 'root', NULL, 'Segunda Cuenta'),
+    //           ('lokiPakillo', 'pakillo@mail.test', 'root', NULL, 'Tercera Cuenta'),
+    //           ('Maritxu', 'maria@mail.test', 'root', NULL, 'Cuarta Cuenta'),
+    //           ('Jon', 'jon@mail.com', 'root', NULL, 'Quinta Cuenta');`
+    // );
 
-    await connection.query(
-      `INSERT INTO links (user_id, url, titulo, description) 
-      VALUES  (1, 'https://www.google.com/', 'Google', 'Mejor buscador del mundo'),
-              (3, 'https://www.twitch.com/', 'Twitch', 'Streamers retransmitiendo en directo'),
-              (1, 'https://www.youtube.com/', 'Youtube', 'Los mejores videos de todo internet'),
-              (4, 'https://www.twitter.com/', 'Twitter', 'Centro de noticicas y desvarios');`
-    );
+    // await connection.query(
+    //   `INSERT INTO links (user_id, url, titulo, description) 
+    //   VALUES  (1, 'https://www.google.com/', 'Google', 'Mejor buscador del mundo'),
+    //           (3, 'https://www.twitch.com/', 'Twitch', 'Streamers retransmitiendo en directo'),
+    //           (1, 'https://www.youtube.com/', 'Youtube', 'Los mejores videos de todo internet'),
+    //           (4, 'https://www.twitter.com/', 'Twitter', 'Centro de noticicas y desvarios');`
+    // );
   } catch (error) {
     console.error(error);
   } finally {
